@@ -2,20 +2,28 @@
 version: "3.8"
 services:
   authelia:
-    container_name: authelia
     image: docker.io/authelia/authelia:latest
+    container_name: authelia
     restart: unless-stopped
     networks:
       traefik_proxy:
     expose:
       - 9091
-    secrets: [JWT_SECRET, SESSION_SECRET, STORAGE_PASSWORD, STORAGE_ENCRYPTION_KEY]
     environment:
+      - TZ=Europe/Zurich
       - AUTHELIA_JWT_SECRET
       - AUTHELIA_SESSION_SECRET
       - AUTHELIA_STORAGE_ENCRYPTION_KEY
     volumes:
       - ./config:/config
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.authelia.rule=Host(`authelia.nuc10i7fnh.home.arpa`)'
+      - 'traefik.http.routers.authelia.entrypoints=https'
+      - 'traefik.http.routers.authelia.tls=true'
+      - 'traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=authelia.nuc10i7fnh.home.arpa'
+      - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
+      - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
 
 networks:
   traefik_proxy:
