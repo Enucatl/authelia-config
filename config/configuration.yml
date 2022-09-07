@@ -12,7 +12,6 @@ server:
 
 log:
   level: debug
-# This secret can also be set using the env variables AUTHELIA_JWT_SECRET_FILE
 
 totp:
   issuer: authelia.nuc10i7fnh.home.arpa
@@ -37,15 +36,15 @@ authentication_backend:
     user: uid=ldap_ro,cn=sysaccounts,cn=etc,dc=home,dc=arpa
 
 access_control:
-  default_policy: one_factor
+  default_policy: deny
+  networks:
+    - name: local
+      networks:
+        - '192.168.0.0/16'
   rules:
-    # Rules applied to everyone
-    - domain: public.example.com
-      policy: bypass
-    - domain: traefik.example.com
+    - networks:
+      - 'local'
       policy: one_factor
-    - domain: secure.example.com
-      policy: two_factor
 
 session:
   name: authelia_session
