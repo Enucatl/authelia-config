@@ -2,6 +2,7 @@
 version: "3.8"
 services:
   authelia:
+    user: "1000:1000"
     image: authelia/authelia:latest
     restart: unless-stopped
     networks:
@@ -17,7 +18,6 @@ services:
       - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
     volumes:
       - /home/user/docker/authelia-config/config:/config
-
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.authelia.rule=Host(`authelia.nuc10i7fnh.home.arpa`)'
