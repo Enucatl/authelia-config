@@ -25,7 +25,7 @@ services:
       - 'traefik.http.routers.authelia.rule=Host(`authelia.nuc10i7fnh.home.arpa`)'
       - 'traefik.http.routers.authelia.entrypoints=https'
       - 'traefik.http.routers.authelia.tls=true'
-      - 'traefik.http.middlewares.authelia.forwardauth.address=http://nuc10i7fnh.home.arpa:9091/api/verify?auth=basic'
+      - 'traefik.http.middlewares.authelia.forwardauth.address=http://nuc10i7fnh.home.arpa:9091/api/verify?rd=authelia.nuc10i7fnh.home.arpa'
       - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
       - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
 
