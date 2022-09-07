@@ -2,8 +2,7 @@
 version: "3.8"
 services:
   authelia:
-    image: docker.io/authelia/authelia:latest
-    container_name: authelia
+    image: authelia/authelia:latest
     restart: unless-stopped
     networks:
       traefik_proxy:
@@ -27,7 +26,6 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: redis
     volumes:
       - redis:/data
     networks:
