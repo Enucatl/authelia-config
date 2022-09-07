@@ -1,0 +1,22 @@
+---
+version: "3.8"
+services:
+  authelia:
+    container_name: authelia
+    image: docker.io/authelia/authelia:latest
+    restart: unless-stopped
+    networks:
+      traefik_proxy:
+    expose:
+      - 9091
+    secrets: [JWT_SECRET, SESSION_SECRET, STORAGE_PASSWORD, STORAGE_ENCRYPTION_KEY]
+    environment:
+      - AUTHELIA_JWT_SECRET
+      - AUTHELIA_SESSION_SECRET
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY
+    volumes:
+      - ./config:/config
+
+networks:
+  traefik_proxy:
+    external: true
