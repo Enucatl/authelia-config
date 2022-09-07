@@ -51,6 +51,9 @@ session:
   expiration: 186400  # 2 day
   inactivity: 86400  # 1 day
   domain: home.arpa
+  redis:
+    host: redis
+    port: 6379
 
 regulation:
   max_retries: 3

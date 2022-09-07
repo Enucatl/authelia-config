@@ -25,6 +25,22 @@ services:
       - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
       - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
 
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      - redis:/data
+    networks:
+      - net
+    expose:
+      - 6379
+    restart: unless-stopped
+    environment:
+      - TZ=Australia/Melbourne
+
 networks:
   traefik_proxy:
     external: true
+
+volumes:
+  redis:
