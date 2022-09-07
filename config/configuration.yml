@@ -33,7 +33,8 @@ authentication_backend:
     additional_groups_dn: cn=groups
     groups_filter: (&(memberUid={input})(objectClass=posixGroup))
     group_name_attribute: cn
-    permit_unauthenticated_bind: true
+    permit_unauthenticated_bind: false
+    user: uid=ldap_ro,cn=sysaccounts,cn=etc,dc=home,dc=arpa
 
 access_control:
   default_policy: one_factor
