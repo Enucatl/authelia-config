@@ -31,7 +31,7 @@ services:
     volumes:
       - redis:/data
     networks:
-      - net
+      traefik_proxy:
     expose:
       - 6379
     restart: unless-stopped
