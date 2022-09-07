@@ -14,7 +14,8 @@ services:
       - AUTHELIA_SESSION_SECRET
       - AUTHELIA_STORAGE_ENCRYPTION_KEY
     volumes:
-      - ./config:/config
+      - /home/user/docker/authelia-config/config:/config
+
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.authelia.rule=Host(`authelia.nuc10i7fnh.home.arpa`)'
