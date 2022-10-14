@@ -44,7 +44,7 @@ access_control:
   rules:
     - domain: "*.nuc10i7fnh.home.arpa"
       networks:
-      - 'local'
+        - 'local'
       policy: one_factor
 
 session:
