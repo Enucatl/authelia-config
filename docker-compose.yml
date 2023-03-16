@@ -21,6 +21,7 @@ services:
     ports:
       - 9091:9091
     labels:
+      - 'checkmk_monitor=true'
       - 'traefik.enable=true'
       - 'traefik.http.routers.authelia.rule=Host(`authelia.nuc10i7fnh.home.arpa`)'
       - 'traefik.http.routers.authelia.entrypoints=https'
