@@ -17,7 +17,7 @@ services:
       - AUTHELIA_STORAGE_ENCRYPTION_KEY
       - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
     volumes:
-      - /home/user/docker/authelia-config/config:/config
+      - /nfs_exports/home/user/docker/authelia-config/config:/config
     ports:
       - 9091:9091
     labels:
