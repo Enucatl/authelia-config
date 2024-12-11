@@ -53,12 +53,17 @@ access_control:
       policy: one_factor
 
 session:
-  domain: home.arpa
   cookies:
     - name: authelia_session
+      domain: home.arpa
       expiration: 186400  # 2 day
       inactivity: 86400  # 1 day
       authelia_url: 'https://authelia.nuc10i7fnh.home.arpa'
+      default_redirection_url: 'https://authelia.nuc10i7fnh.home.arpa'
+      same_site: 'lax'
+      inactivity: '1d'
+      expiration: '2d'
+      remember_me: '30d'
   redis:
     host: redis
     port: 6379
