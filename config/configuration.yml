@@ -6,8 +6,7 @@
 certificates_directory: /config/certs/
 
 server:
-  host: '::'
-  port: 9091
+  address: 'tcp://:::9091/'
   endpoints:
     authz:
       forward-auth:
@@ -30,11 +29,12 @@ authentication_backend:
     base_dn: cn=compat,dc=home,dc=arpa
     additional_users_dn: cn=users
     users_filter: (&({username_attribute}={input})(objectClass=posixAccount))
-    username_attribute: uid
-    display_name_attribute: uid
     additional_groups_dn: cn=groups
     groups_filter: (&(memberUid={input})(objectClass=posixGroup))
-    group_name: cn
+    attributes:
+      username: uid
+      display_name: uid
+      group_name: cn
     permit_unauthenticated_bind: false
     user: uid=ldap_ro,cn=sysaccounts,cn=etc,dc=home,dc=arpa
 
@@ -53,6 +53,7 @@ access_control:
       policy: one_factor
 
 session:
+  domain: home.arpa
   cookies:
     - name: authelia_session
       expiration: 186400  # 2 day
