@@ -7,7 +7,7 @@ default_redirection_url: https://authelia.nuc10i7fnh.home.arpa
 certificates_directory: /config/certs/
 
 server:
-  host: 0.0.0.0
+  host: '::'
   port: 9091
 
 log:

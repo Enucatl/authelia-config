@@ -18,17 +18,18 @@ services:
       - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
     volumes:
       - /nfs_exports/home/user/docker/authelia-config/config:/config
-    ports:
-      - 9091:9091
+    expose:
+      - 9091
     labels:
       - 'checkmk_monitor=true'
       - 'traefik.enable=true'
       - 'traefik.http.routers.authelia.rule=Host(`authelia.nuc10i7fnh.home.arpa`)'
       - 'traefik.http.routers.authelia.entrypoints=https'
       - 'traefik.http.routers.authelia.tls=true'
-      - 'traefik.http.middlewares.authelia.forwardauth.address=http://nuc10i7fnh.home.arpa:9091/api/verify?rd=https%3A%2F%2Fauthelia.nuc10i7fnh.home.arpa%2F'
+      - 'traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https%3A%2F%2Fauthelia.nuc10i7fnh.home.arpa%2F'
       - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
       - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
+      - 'traefik.http.middlewares.authelia.forwardauth.authRequestHeaders=X-Forwarded-Proto,X-Forwarded-Host,X-Forwarded-Uri,X-Forwarded-For'
 
   redis:
     image: redis:alpine
