@@ -3,12 +3,15 @@
 #                   Authelia configuration                    #
 ###############################################################
 
-default_redirection_url: https://authelia.nuc10i7fnh.home.arpa
 certificates_directory: /config/certs/
 
 server:
   host: '::'
   port: 9091
+  endpoints:
+    authz:
+      forward-auth:
+        implementation: 'ForwardAuth'
 
 log:
   level: trace
@@ -41,7 +44,8 @@ access_control:
     - name: local
       networks:
         - '192.168.2.0/24'
-        - '172.28.0.0/16'
+        - '172.17.0.0/16'
+        - '2a04:ee41:3:5506::0/64'
   rules:
     - domain: "*.nuc10i7fnh.home.arpa"
       networks:
@@ -49,10 +53,11 @@ access_control:
       policy: one_factor
 
 session:
-  name: authelia_session
-  expiration: 186400  # 2 day
-  inactivity: 86400  # 1 day
-  domain: nuc10i7fnh.home.arpa
+  cookies:
+    - name: authelia_session
+      expiration: 186400  # 2 day
+      inactivity: 86400  # 1 day
+      authelia_url: 'https://authelia.nuc10i7fnh.home.arpa'
   redis:
     host: redis
     port: 6379
