@@ -11,7 +11,7 @@ server:
   port: 9091
 
 log:
-  level: debug
+  level: trace
 
 totp:
   issuer: authelia.nuc10i7fnh.home.arpa
