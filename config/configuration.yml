@@ -20,8 +20,8 @@ totp:
 
 authentication_backend:
   ldap:
-    implementation: custom
     address: ldaps://ipa.home.arpa
+    implementation: custom
     timeout: 10s
     start_tls: false
     tls:
@@ -31,12 +31,12 @@ authentication_backend:
     users_filter: (&({username_attribute}={input})(objectClass=posixAccount))
     additional_groups_dn: cn=groups
     groups_filter: (&(memberUid={input})(objectClass=posixGroup))
+    permit_unauthenticated_bind: false
+    user: uid=ldap_ro,cn=sysaccounts,cn=etc,dc=home,dc=arpa
     attributes:
       username: uid
       display_name: uid
       group_name: cn
-    permit_unauthenticated_bind: false
-    user: uid=ldap_ro,cn=sysaccounts,cn=etc,dc=home,dc=arpa
 
 access_control:
   default_policy: deny
@@ -56,10 +56,8 @@ session:
   cookies:
     - name: authelia_session
       domain: home.arpa
-      expiration: 186400  # 2 day
-      inactivity: 86400  # 1 day
       authelia_url: 'https://authelia.nuc10i7fnh.home.arpa'
-      default_redirection_url: 'https://authelia.nuc10i7fnh.home.arpa'
+      default_redirection_url: 'https://traefik.nuc10i7fnh.home.arpa/'
       same_site: 'lax'
       inactivity: '1d'
       expiration: '2d'
@@ -76,6 +74,10 @@ regulation:
 storage:
   local:
     path: /config/db.sqlite3
+
+identity_validation:
+  reset_password:
+    jwt_secret: '${AUTHELIA_JWT_SECRET}'
 
 notifier:
   #smtp:
