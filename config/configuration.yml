@@ -14,7 +14,7 @@ server:
         implementation: 'ForwardAuth'
 
 log:
-  level: trace
+  level: debug
 
 totp:
   issuer: authelia.nuc10i7fnh.home.arpa
@@ -22,7 +22,7 @@ totp:
 authentication_backend:
   ldap:
     implementation: custom
-    url: ldaps://ipa.home.arpa
+    address: ldaps://ipa.home.arpa
     timeout: 10s
     start_tls: false
     tls:
@@ -34,7 +34,7 @@ authentication_backend:
     display_name_attribute: uid
     additional_groups_dn: cn=groups
     groups_filter: (&(memberUid={input})(objectClass=posixGroup))
-    group_name_attribute: cn
+    group_name: cn
     permit_unauthenticated_bind: false
     user: uid=ldap_ro,cn=sysaccounts,cn=etc,dc=home,dc=arpa
 
