@@ -63,7 +63,7 @@ session:
       expiration: '2d'
       remember_me: '30d'
   redis:
-    host: redis
+    host: authelia-redis-1
     port: 6379
 
 regulation:
