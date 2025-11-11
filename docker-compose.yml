@@ -16,7 +16,7 @@ services:
       - AUTHELIA_STORAGE_ENCRYPTION_KEY
       - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
     volumes:
-      - /nfs_exports/home/user/docker/authelia-config/config:/config
+      - /nfs_exports/home/user/docker/authelia/config:/config
     labels:
       - 'checkmk_monitor=true'
       - 'traefik.enable=true'
