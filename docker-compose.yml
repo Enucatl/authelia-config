@@ -1,38 +1,43 @@
 ---
 services:
   authelia:
-    user: "1000:1000"
     image: authelia/authelia:latest
     restart: unless-stopped
     networks:
       traefik_proxy:
+      default:
     expose:
       - 9091
     environment:
-      - TZ=Europe/Zurich
-      - AUTHELIA_JWT_SECRET
+      - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDRESS=ldaps://freeipa.${DOMAIN}
+      - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE=/run/secrets/ldap_password
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/run/secrets/authelia_jwt_secret
       - AUTHELIA_SESSION_SECRET
-      #- AUTHELIA_SESSION_REDIS_PASSWORD
       - AUTHELIA_STORAGE_ENCRYPTION_KEY
-      - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD
+      - TZ=Europe/Zurich
     volumes:
-      - /nfs_exports/home/user/docker/authelia/config:/config
+      - config:/config
+      - /etc/ssl/certs/ca-certificates.crt:/certs/ca-certificates.crt:ro
+      - ./config/configuration.yml:/config/configuration.yml
     labels:
       - 'checkmk_monitor=true'
       - 'traefik.enable=true'
-      - 'traefik.http.routers.authelia.rule=Host(`authelia.nuc10i7fnh.home.arpa`)'
+      - 'traefik.http.routers.authelia.rule=Host(`authelia.${DOCKER_DOMAIN}`)'
       - 'traefik.http.routers.authelia.entrypoints=https'
       - 'traefik.http.routers.authelia.tls=true'
       - 'traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/authz/forward-auth'
       - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
       - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'
+    secrets:
+      - authelia_jwt_secret
+      - ldap_password
 
   redis:
     image: redis:alpine
     volumes:
       - redis:/data
     networks:
-      traefik_proxy:
+      default:
     expose:
       - 6379
     restart: unless-stopped
@@ -42,6 +47,14 @@ services:
 networks:
   traefik_proxy:
     external: true
+  default:
 
 volumes:
   redis:
+  config:
+
+secrets:
+  authelia_jwt_secret:
+    file: secrets/authelia_jwt_secret
+  ldap_password:
+    file: secrets/ldap_password

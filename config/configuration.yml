@@ -3,7 +3,7 @@
 #                   Authelia configuration                    #
 ###############################################################
 
-certificates_directory: /config/certs/
+certificates_directory: /certs/
 
 server:
   address: 'tcp://:::9091/'
@@ -16,23 +16,22 @@ log:
   level: debug
 
 totp:
-  issuer: authelia.nuc10i7fnh.home.arpa
+  issuer: authelia.docker.home.arpa
 
 authentication_backend:
   ldap:
-    address: ldaps://ipa.home.arpa
     implementation: custom
     timeout: 10s
     start_tls: false
     tls:
-      server_name: ipa.home.arpa
+      server_name: freeipa.home.arpa
     base_dn: cn=compat,dc=home,dc=arpa
     additional_users_dn: cn=users
     users_filter: (&({username_attribute}={input})(objectClass=posixAccount))
     additional_groups_dn: cn=groups
     groups_filter: (&(memberUid={input})(objectClass=posixGroup))
     permit_unauthenticated_bind: false
-    user: uid=ldap_ro,cn=sysaccounts,cn=etc,dc=home,dc=arpa
+    user: uid=ldap_ro,cn=users,cn=accounts,dc=home,dc=arpa
     attributes:
       username: uid
       display_name: uid
@@ -47,7 +46,7 @@ access_control:
         - '172.17.0.0/16'
         - '2a04:ee41:3:5506::0/64'
   rules:
-    - domain: "*.nuc10i7fnh.home.arpa"
+    - domain: "*.docker.home.arpa"
       networks:
         - 'local'
       policy: one_factor
@@ -55,9 +54,9 @@ access_control:
 session:
   cookies:
     - name: authelia_session
-      domain: nuc10i7fnh.home.arpa
-      authelia_url: 'https://authelia.nuc10i7fnh.home.arpa'
-      default_redirection_url: 'https://traefik.nuc10i7fnh.home.arpa/dashboard/#/'
+      domain: docker.home.arpa
+      authelia_url: 'https://authelia.docker.home.arpa'
+      default_redirection_url: 'https://traefik.docker.home.arpa/dashboard/#/'
       same_site: 'lax'
       inactivity: '1d'
       expiration: '2d'
@@ -74,10 +73,6 @@ regulation:
 storage:
   local:
     path: /config/db.sqlite3
-
-identity_validation:
-  reset_password:
-    jwt_secret: '${AUTHELIA_JWT_SECRET}'
 
 notifier:
   #smtp:
