@@ -43,7 +43,7 @@ access_control:
     - name: local
       networks:
         - '10.0.0.0/24'
-        - '172.17.0.0/16'
+        - '172.17.0.0/12'
         - '2a04:ee41:3:5506::0/64'
   rules:
     - domain: "*.docker.home.arpa"
