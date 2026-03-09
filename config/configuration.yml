@@ -46,9 +46,9 @@ access_control:
         - '{{ env "TRUSTED_WIFI_SUBNET" }}'
         - '{{ env "WG_SUBNET" }}'
         - '172.17.0.0/12'
-        - '{{ env "IPV6_PREFIX" }}:0::/64'
-        - '{{ env "IPV6_PREFIX" }}:a::/64'
-        - '{{ env "IPV6_PREFIX" }}:c8::/64'
+        - '{{ env "IPV6_LAN_SUBNET" }}'
+        - '{{ env "IPV6_TRUSTED_WIFI_SUBNET" }}'
+        - '{{ env "IPV6_WG_SUBNET" }}'
   rules:
     - domain: "*.docker.home.arpa"
       networks:

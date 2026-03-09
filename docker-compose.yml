@@ -19,7 +19,9 @@ services:
       - LAN_SUBNET
       - TRUSTED_WIFI_SUBNET
       - WG_SUBNET
-      - IPV6_PREFIX
+      - IPV6_LAN_SUBNET
+      - IPV6_TRUSTED_WIFI_SUBNET
+      - IPV6_WG_SUBNET
     volumes:
       - config:/config
       - /etc/ssl/certs/ca-certificates.crt:/certs/ca-certificates.crt:ro
