@@ -15,6 +15,11 @@ services:
       - AUTHELIA_SESSION_SECRET
       - AUTHELIA_STORAGE_ENCRYPTION_KEY
       - TZ=Europe/Zurich
+      - X_AUTHELIA_CONFIG_FILTERS=template
+      - LAN_SUBNET
+      - TRUSTED_WIFI_SUBNET
+      - WG_SUBNET
+      - IPV6_PREFIX
     volumes:
       - config:/config
       - /etc/ssl/certs/ca-certificates.crt:/certs/ca-certificates.crt:ro

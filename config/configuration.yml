@@ -42,13 +42,13 @@ access_control:
   networks:
     - name: local
       networks:
-        - '10.0.0.0/24'
-        - '10.0.10.0/24'
-        - '10.0.200.0/24'
+        - '{{ env "LAN_SUBNET" }}'
+        - '{{ env "TRUSTED_WIFI_SUBNET" }}'
+        - '{{ env "WG_SUBNET" }}'
         - '172.17.0.0/12'
-        - '2a02:168:6278::/64'
-        - '2a02:168:6278:a::/64'
-        - '2a02:168:6278:c8::/64'
+        - '{{ env "IPV6_PREFIX" }}:0::/64'
+        - '{{ env "IPV6_PREFIX" }}:a::/64'
+        - '{{ env "IPV6_PREFIX" }}:c8::/64'
   rules:
     - domain: "*.docker.home.arpa"
       networks:
