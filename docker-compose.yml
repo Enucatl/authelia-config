@@ -50,7 +50,6 @@ services:
     extends:
       file: ../compose-security-baseline/hardening.yml
       service: redis
-    image: redis:8
     cpu_shares: 1024
     volumes:
       - redis:/data
@@ -58,9 +57,6 @@ services:
       default:
     expose:
       - 6379
-    restart: unless-stopped
-    environment:
-      - TZ=Europe/Zurich
 
 networks:
   traefik_proxy:
