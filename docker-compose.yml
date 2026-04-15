@@ -6,7 +6,7 @@ services:
       service: hardened-small
     read_only: false
     image: authelia/authelia:latest
-    restart: no
+    restart: on-failure:3
     user: 1000:1000
     cpu_shares: 1536
     depends_on:
@@ -40,7 +40,6 @@ services:
       - config:/config
       - /etc/ssl/certs/ca-certificates.crt:/certs/ca-certificates.crt:ro
       - ./config/configuration.yml:/config/configuration.yml
-    # command: "sleep 3600"
     labels:
       - 'checkmk_monitor=true'
       - 'traefik.enable=true'
