@@ -3,10 +3,15 @@ services:
   authelia:
     extends:
       file: ../compose-security-baseline/hardening.yml
-      service: setpcap-chown-init
+      service: hardened-small
+    read_only: false
     image: authelia/authelia:latest
-    restart: unless-stopped
+    restart: no
+    user: 1000:1000
     cpu_shares: 1536
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       traefik_proxy:
       default:
@@ -16,20 +21,26 @@ services:
       - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_ADDRESS=ldaps://freeipa.${DOMAIN}
       - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE=/run/secrets/ldap_password
       - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/run/secrets/authelia_jwt_secret
+      - AUTHELIA_NOTIFIER_SMTP_IDENTIFIER=authelia.docker.home.arpa
       - AUTHELIA_SESSION_SECRET_FILE=/run/secrets/session_secret
       - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/run/secrets/storage_encryption_key
-      - TZ=Europe/Zurich
-      - X_AUTHELIA_CONFIG_FILTERS=template
-      - LAN_SUBNET
-      - TRUSTED_WIFI_SUBNET
-      - WG_SUBNET
       - IPV6_LAN_SUBNET
       - IPV6_TRUSTED_WIFI_SUBNET
       - IPV6_WG_SUBNET
+      - LAN_SUBNET
+      - POSTGRES_PASSWORD
+      - SMTP_PASSWORD
+      - SMTP_SENDER
+      - SMTP_USERNAME
+      - TRUSTED_WIFI_SUBNET
+      - TZ=Europe/Zurich
+      - WG_SUBNET
+      - X_AUTHELIA_CONFIG_FILTERS=template
     volumes:
       - config:/config
       - /etc/ssl/certs/ca-certificates.crt:/certs/ca-certificates.crt:ro
       - ./config/configuration.yml:/config/configuration.yml
+    # command: "sleep 3600"
     labels:
       - 'checkmk_monitor=true'
       - 'traefik.enable=true'
@@ -45,6 +56,19 @@ services:
       - ldap_password
       - session_secret
       - storage_encryption_key
+
+  postgres:
+    extends:
+      file: ../compose-security-baseline/hardening.yml
+      service: postgres
+    image: postgres:18
+    networks:
+      default:
+    volumes:
+      - postgres:/var/lib/postgresql/
+    environment:
+      - POSTGRES_DB=authelia
+      - POSTGRES_PASSWORD
 
   redis:
     extends:
@@ -62,10 +86,12 @@ networks:
   traefik_proxy:
     external: true
   default:
+    internal: true
 
 volumes:
   redis:
   config:
+  postgres:
 
 secrets:
   authelia_jwt_secret:
