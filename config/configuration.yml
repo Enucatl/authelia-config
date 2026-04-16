@@ -7,14 +7,17 @@ certificates_directory: /certs/
 
 server:
   address: 'tcp://:::9091/'
+  # needed for read_only: true
+  # still runs the healtcheck, just doesn't write the config file on startup in
+  # the ephemeral storage
+  disable_healthcheck: true
   endpoints:
     authz:
       forward-auth:
         implementation: 'ForwardAuth'
 
 log:
-  level: trace
-  format: text
+  level: debug
   keep_stdout: true
 
 totp:
