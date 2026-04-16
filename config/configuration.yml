@@ -87,9 +87,8 @@ storage:
     password: '{{ env "POSTGRES_PASSWORD" }}'
 
 notifier:
-  disable_startup_check: true
   smtp:
-    address: submission://smtp.google.com:587
+    address: submission://smtp.gmail.com:587
     username: '{{ env "SMTP_USERNAME" }}'
     password: '{{ env "SMTP_PASSWORD" }}'
     sender: '{{ env "SMTP_SENDER" }}'
